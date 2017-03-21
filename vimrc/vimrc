@@ -1,0 +1,151 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'	" let Vundle manage Vundle
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
+Plugin 'jelera/vim-javascript-syntax'   " js highlighting
+Plugin 'pangloss/vim-javascript'        " more js highlighting
+Plugin 'nathanaelkane/vim-indent-guides'    " show indentation levels
+Plugin 'Raimondi/delimitMate'   " automatic closing of parentheses, etc.
+Plugin 'scrooloose/nerdtree'
+Plugin 'mattn/emmet-vim'        " edit HTML fast
+Plugin 'jmcantrell/vim-virtualenv'  " working with python virtual environments
+Plugin 'richq/vim-cmake-completion' " cmake autocompletion
+Plugin 'mileszs/ack.vim'    " :Ack in vim
+Plugin 'jgdavey/tslime.vim' " Send commands to tmux
+Plugin 'vim-scripts/SQLComplete.vim'      " sql syntax
+Plugin 'vim-scripts/dbext.vim'          " dynamic sql completion
+Plugin 'ternjs/tern_for_vim'
+Plugin 'vim-syntastic/syntastic'    " syntastic, what yet to be said?
+Plugin 'def-lkb/ocp-indent-vim'
+Plugin 'python-mode/python-mode'
+Plugin 'fatih/vim-go'
+
+" Keep Plugin commands between vundle#begin/end.
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+set omnifunc=syntaxcomplete#Complete
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle end
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set t_Co=256		    " support 256 colors
+
+syntax on		        " enable color syntax highlighting
+color molokai  		    " nice colorscheme
+
+set tabstop=4		    " number of visual spaces per tab
+set softtabstop=4	    " number of spaces in tab when editing
+set shiftwidth=4        " >>, <<
+set expandtab		    " tabs are spaces
+set smarttab            " tabs begin really smart
+
+set backspace=2         " make backspace work like in other apps
+
+set number		        " show line numbers
+set cursorline		    " highlight current line
+filetype indent on      " load filetype-specific indent files
+syntax on               " enable syntax highlighting 
+set wildmenu            " visual autocomplete for command menu
+set showmatch           " highlight matching [({})]
+set colorcolumn=80      " set line length marker
+
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+set foldmethod=syntax   " folding according to syntax
+
+set laststatus=2        " always show status line
+set statusline=%t       "tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Bindings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" space open/closes folds
+nnoremap <space> za     
+
+" save session
+nnoremap <leader>s :mksession<CR>
+
+"FixIt
+nnoremap <F9> :YcmCompleter FixIt<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Bindings end
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Options
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" global configuration file for YCM
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf_global.py'
+
+" close preview window after completion
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+" don't ask about loading .ycm_extra_conf.py
+let g:ycm_confirm_extra_conf = 0
+
+" explorer mode with NERDTree style
+let g:netrw_liststyle=3
+
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
+
+let g:opamshare = substitute(system('opam config var share'), '\n$', '', '')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+let g:syntastic_ocaml_checkers = ['merlin']
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Options end
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+      
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" tslime key bindings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+vmap <C-c><C-c> <Plug>SendSelectionToTmux
+nmap <C-c><C-c> <Plug>NormalModeSendToTmux
+nmap <C-c>r <Plug>SetTmuxVars
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" end of tslime key bindings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
