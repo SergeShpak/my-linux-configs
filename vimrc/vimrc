@@ -27,6 +27,11 @@ Plugin 'vim-syntastic/syntastic'    " syntastic, what yet to be said?
 Plugin 'def-lkb/ocp-indent-vim'
 Plugin 'python-mode/python-mode'
 Plugin 'fatih/vim-go'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'lsdr/octave.vim'
+Plugin 'tomlion/vim-solidity'
 
 " Keep Plugin commands between vundle#begin/end.
 
@@ -123,21 +128,20 @@ let g:ycm_server_log_level = 'debug'
 let g:opamshare = substitute(system('opam config var share'), '\n$', '', '')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 let g:syntastic_ocaml_checkers = ['merlin']
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options end
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-"python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-      
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tslime key bindings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -149,3 +153,10 @@ nmap <C-c>r <Plug>SetTmuxVars
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " end of tslime key bindings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+autocmd FileType matlab setlocal keywordprg=info\ octave\ --vi-keys\ --index-search
+
+" Haskell configs
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc@omnifunc
+let g:ycm_semantic_triggers = {'haskell': ['.']}
